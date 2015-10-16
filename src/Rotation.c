@@ -1,11 +1,17 @@
 #include "Rotation.h"
-#include "stdlib.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-Node *rightRotation(Node *root){
+Node *leftRotation(Node *root){
   
-  Node *temp1 = malloc(sizeof(Node));
-  Node *temp2 = malloc(sizeof(Node));
-  Node *temp3 = malloc(sizeof(Node));
+  if(root->right == NULL){
+    printf("No right child!");
+    return root;
+  }
+  
+  Node *temp1;
+  Node *temp2;
+  Node *temp3;
   
   temp1 = root;
   temp2 = root->right;
@@ -19,7 +25,41 @@ Node *rightRotation(Node *root){
   return root;
 }
 
-Node *leftRotation(Node *root){
+Node *rightRotation(Node *root){
   
+  if(root->left == NULL){
+    printf("No left child!");
+    return root;
+  }
   
+  Node *temp1;
+  Node *temp2;
+  Node *temp3;
+  
+  temp1 = root;
+  temp2 = root->left;
+  temp3 = root->left->right;
+  
+  temp2->right = temp1;
+  temp1->left = temp3;
+  
+  root = temp2;
+  
+  return root;
+}
+
+Node *rightLeftRotation(Node *root){
+  
+  root->right = rightRotation(root->right);
+  root = leftRotation(root);
+  
+  return root;
+}
+
+Node *leftRightRotation(Node *root){
+  
+  root->left = leftRotation(root->left);
+  root = rightRotation(root);
+  
+  return root;
 }
