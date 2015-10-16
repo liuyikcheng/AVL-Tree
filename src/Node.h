@@ -10,6 +10,6 @@ struct Node_t{
   int data;
 };
 
-Node *nodeTree();
+Node *nodeTree(Node *root, Node *node);
 Node *createNode(int num);
 #endif // Node_H
