@@ -43,16 +43,21 @@ int avlAdd(Node **root, Node *newNode){
   }
   else if (((*root)->data > newNode->data)&&((*root)->left != NULL)){
     childBalanceFactor = avlAdd(&((*root)->left), newNode);
-    if((((*root)->left->balanceFactor) != 0) && childBalanceFactor != 0)
+    if( childBalanceFactor)
       ((*root)->balanceFactor)--;
   }
   else if (((*root)->data < newNode->data)&&((*root)->right != NULL)){
     childBalanceFactor = avlAdd(&((*root)->right), newNode);
-    if((((*root)->right->balanceFactor) != 0) && childBalanceFactor !=0)
+    if(childBalanceFactor)
       ((*root)->balanceFactor)++;
   }
   
-  if(currentBalanceFactor != ((*root)->balanceFactor))
+  // if(currentBalanceFactor != ((*root)->balanceFactor))
+    // return 1;
+  // else
+    // return 0;
+  
+  if(((*root)->balanceFactor != 0) && ((currentBalanceFactor == (*root)->balanceFactor + 1) || (currentBalanceFactor == (*root)->balanceFactor - 1)))
     return 1;
   else
     return 0;
