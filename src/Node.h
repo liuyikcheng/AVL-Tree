@@ -6,10 +6,11 @@ typedef struct Node_t Node;
 struct Node_t{
   Node *left;
   Node *right;
-  int weight;
+  int balanceFactor;
   int data;
 };
 
-Node *nodeTree(Node *root, Node *node);
-Node *createNode(int num);
+void setNode(int balanceFactor, Node *root, Node *left, Node *right);
+int avlAdd(Node **root, Node *newNode);
+
 #endif // Node_H
