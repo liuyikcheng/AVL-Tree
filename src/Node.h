@@ -12,5 +12,6 @@ struct Node_t{
 
 void setNode(int balanceFactor, Node *root, Node *left, Node *right);
 int avlAdd(Node **root, Node *newNode);
+Node *nodeRotation(Node *root);
 
 #endif // Node_H

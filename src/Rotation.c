@@ -16,7 +16,7 @@ Node *leftRotation(Node *root){
   temp1 = root;
   temp2 = root->right;
   temp3 = root->right->left;
-
+   
   temp2->left = temp1;
   temp1->right = temp3;
   

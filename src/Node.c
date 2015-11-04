@@ -1,4 +1,5 @@
 #include "Node.h"
+#include "Rotation.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -52,13 +53,76 @@ int avlAdd(Node **root, Node *newNode){
       ((*root)->balanceFactor)++;
   }
   
-  // if(currentBalanceFactor != ((*root)->balanceFactor))
-    // return 1;
-  // else
-    // return 0;
+  nodeRotation(*root);
   
   if(((*root)->balanceFactor != 0) && ((currentBalanceFactor == (*root)->balanceFactor + 1) || (currentBalanceFactor == (*root)->balanceFactor - 1)))
     return 1;
   else
     return 0;
+}
+
+
+Node *nodeRotation(Node *root){
+    
+  if (root->balanceFactor == 2){         
+    
+    if (root->right->balanceFactor == 1){      //left rotation
+    
+      if (root->right->right->balanceFactor != 0){
+      root = leftRotation(root);
+      root->balanceFactor--;
+      root->left->balanceFactor = root->left->balanceFactor - 2;
+      }
+    }
+    else if (root->right->balanceFactor == -1){  //right left rotation
+      root = rightLeftRotation(root);
+ 
+      switch(root->balanceFactor) {
+        case -1:  root->balanceFactor = 0;
+                  root->left->balanceFactor = 0;
+                  root->right->balanceFactor = 1;
+                  break;
+        case  1:  root->balanceFactor = 0;
+                  root->left->balanceFactor = -1;
+                  root->right->balanceFactor = 0;
+                  break;
+        case  0:  root->balanceFactor = 0;
+                  root->left->balanceFactor = 0;
+                  root->right->balanceFactor = 0;
+                  break;
+      }
+      
+    }
+  
+  }
+  else if (root->balanceFactor == -2){
+    
+    if (root->left->balanceFactor == -1){
+      
+       if (root->left->left->balanceFactor != 0){
+      root = rightRotation(root);
+      root->balanceFactor++;
+      root->right->balanceFactor = root->right->balanceFactor + 2;
+      }
+    }
+    else if (root->left->balanceFactor == 1){
+      root = leftRightRotation(root);
+      
+      switch(root->balanceFactor) {
+        case -1:  root->balanceFactor = 0;
+                  root->left->balanceFactor = 0;
+                  root->right->balanceFactor = 1;
+                  break;
+        case  1:  root->balanceFactor = 0;
+                  root->left->balanceFactor = -1;
+                  root->right->balanceFactor = 0;
+                  break;
+        case  0:  root->balanceFactor = 0;
+                  root->left->balanceFactor = 0;
+                  root->right->balanceFactor = 0;
+                  break;
+      }
+    }
+  }
+  return root;
 }

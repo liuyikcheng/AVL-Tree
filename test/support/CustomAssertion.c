@@ -6,20 +6,20 @@ void customTestAssertNode(int balanceFactor, Node *root, Node *left, Node *right
   
   if((root->left) != left){
     if((root->left) == NULL){
-      CUSTOM_TEST_FAIL(lineNo, "Expected right = %d, but was NULL", left->data);
+      CUSTOM_TEST_FAIL(lineNo, "Expected right of node %d = %d, but was NULL", root->data, left->data);
       }
     else{
-      CUSTOM_TEST_FAIL(lineNo, "Expected left = %d, but was %d", left->data, root->left->data);
+      CUSTOM_TEST_FAIL(lineNo, "Expected left of node %d = %d, but was %d", root->data, left->data, root->left->data);
       }
   }
   if((root->right) != right){
     if((root->right) == NULL){
-      CUSTOM_TEST_FAIL(lineNo, "Expected right = %d, but was NULL", right->data);
+      CUSTOM_TEST_FAIL(lineNo, "Expected right of node %d = %d, but was NULL", root->data, right->data);
     }
     else{
-      CUSTOM_TEST_FAIL(lineNo, "Expected right = %d, but was %d", right->data, root->right->data);
+      CUSTOM_TEST_FAIL(lineNo, "Expected right of node %d = %d, but was %d", root->data, right->data, root->right->data);
     }
   }
   if((root->balanceFactor) != balanceFactor)
-    CUSTOM_TEST_FAIL(lineNo, "Expected balanceFactor = %d, but was %d", balanceFactor, root->balanceFactor);
+    CUSTOM_TEST_FAIL(lineNo, "Expected balanceFactor of node %d = %d, but was %d", root->data, balanceFactor, root->balanceFactor);
 }
