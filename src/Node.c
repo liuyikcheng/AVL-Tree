@@ -34,7 +34,9 @@ int avlAdd(Node **root, Node *newNode){
   int currentBalanceFactor = ((*root)->balanceFactor);
   int childBalanceFactor;
   
-  if (((*root)->data > newNode->data)&&((*root)->left == NULL)){
+  if (*root == NULL)
+    *root = newNode;
+  else if (((*root)->data > newNode->data)&&((*root)->left == NULL)){
     (*root)->left = newNode;
     ((*root)->balanceFactor)--;
   }
@@ -61,7 +63,12 @@ int avlAdd(Node **root, Node *newNode){
     return 0;
 }
 
-
+/**
+ * @brief   The function that rotate the Avl Tree if the balance factor of root is more than 1 or less than -1
+ * @param   root              Contains the address of the root pointer
+ * @retval  root              The rotated Avl tree
+ *
+ */
 Node *nodeRotation(Node *root){
     
   if (root->balanceFactor == 2){         
