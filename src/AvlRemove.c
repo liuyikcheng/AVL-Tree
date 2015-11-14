@@ -5,7 +5,24 @@
 Node *avlRemove(Node **rootPtr, int value, int *heightChange){
   Node *removedNode;
   
-  if (value == (*rootPtr)->left->data){
+  // if((*rootPtr)->right->data == 140){
+    // printf("%d, ", (*rootPtr)->right->data);
+    // printf("%d, ", (*rootPtr)->data);
+    // printf("%d, ", value);
+      // if (value == (*rootPtr)->right->data){
+    // removedNode = (*rootPtr)->right;
+    // (*rootPtr)->right = NULL;
+    // (*rootPtr)->balanceFactor--;
+    
+    // if((*rootPtr)->balanceFactor == 0)
+      // *heightChange = 1;
+    // else
+      // *heightChange = 0;
+  // }
+  // nodeRotation(*rootPtr);
+    // return removedNode;
+  // }
+  if (((*rootPtr)->left != NULL)&&(value == (*rootPtr)->left->data)){
     removedNode = (*rootPtr)->left;
     (*rootPtr)->left = NULL;
     (*rootPtr)->balanceFactor++;
@@ -15,7 +32,7 @@ Node *avlRemove(Node **rootPtr, int value, int *heightChange){
     else
       *heightChange = 0;
   }
-  else if (value == (*rootPtr)->right->data){
+  else if (((*rootPtr)->right != NULL)&&(value == (*rootPtr)->right->data)){
     removedNode = (*rootPtr)->right;
     (*rootPtr)->right = NULL;
     (*rootPtr)->balanceFactor--;
@@ -37,14 +54,12 @@ Node *avlRemove(Node **rootPtr, int value, int *heightChange){
     }
   else if (value > (*rootPtr)->data){
     removedNode = avlRemove(&((*rootPtr)->right), value, heightChange);
-    // printf("%d", (*rootPtr)->right->right->data);
+
     if(*heightChange)
       (*rootPtr)->balanceFactor--;
   }
   
-  
-  
-  // nodeRotation(*rootPtr);
+  nodeRotation(*rootPtr);
   
   return removedNode;
 }

@@ -50,7 +50,7 @@ void tearDown(void){}
  * 
  *
  **/
-void xtest_node_remove(void){
+void test_node_remove(void){
 	setNode(0, &node60, &node20, &node100);
   
   Node *root = &node60;
@@ -72,7 +72,7 @@ void xtest_node_remove(void){
  * 
  *
  **/
-void xtest_node_remove2(void){
+void test_node_remove2(void){
 	setNode(0, &node60, &node20, &node100);
   
   Node *root = &node60;
@@ -96,7 +96,7 @@ void xtest_node_remove2(void){
  *                                                                                     
  *
  **/
-void xtest_node_remove3(void){
+void test_node_remove3(void){
   setNode(1, &node80, &node20, &node110);
   setNode(-1, &node110, &node100, NULL);
   
@@ -124,7 +124,7 @@ void xtest_node_remove3(void){
  *                                  
  *
  **/
-void xtest_node_remove4(void){
+void test_node_remove4(void){
   setNode(-1, &node80, &node40, &node110);
   setNode(0, &node40, &node20, &node60);
   
@@ -143,6 +143,34 @@ void xtest_node_remove4(void){
 /*
  *
  *  Given:
+ *                80(1)                                     80(1) 
+ *               /     \          remove 150               /     \
+ *            40(0)  110(0)  =================>        40(0)  110(-1)       
+ *                    /   \                                    /  
+ *                  120(0) 150(0)                             120(0)
+ *                                                    
+ *                                  
+ *
+ **/
+void test_node_remove5(void){
+  setNode(1, &node80, &node40, &node110);
+  setNode(0, &node110, &node120, &node150);
+  
+  Node *root = &node80;
+  Node *removedNode;
+  
+  int heightChange = 0;
+  
+  removedNode = avlRemove(&root, 150, &heightChange);
+  
+  TEST_ASSERT_NODE(1, &node80, &node40, &node110);
+  TEST_ASSERT_NODE(-1, &node110, &node120, NULL);
+  TEST_ASSERT_EQUAL_PTR(&node150, removedNode);
+}
+
+/*
+ *
+ *  Given:
  *                80(+1)                                   80(+2)                                         110(0)
  *               /     \          remove 30               /     \            Left Rotation               /    \
  *            40(-1)  110(+1)  =================>       40(0)  110(+1)        ==========>             80(0)    150(-1)
@@ -152,7 +180,7 @@ void xtest_node_remove4(void){
  *                   120(0)                                       120(0)
  *
  **/
-void xtest_node_remove_and_left_rotate_the_tree(void){
+void test_node_remove_and_left_rotate_the_tree(void){
   setNode(1, &node80, &node40, &node110);
   setNode(-1, &node40, &node30, NULL);
   setNode(1, &node110, &node90, &node150);
@@ -171,7 +199,7 @@ void xtest_node_remove_and_left_rotate_the_tree(void){
   TEST_ASSERT_EQUAL_PTR(&node30, removedNode);
  }
  
- /*
+/*
  *
  *  Given:
  *         80(-1)             remove140               80(-2)        Right Rotation          40(0)
@@ -194,9 +222,10 @@ void test_node_remove_and_right_rotate_the_tree(void){
   
   int heightChange = 0;
   
-  removedNode = avlRemove(&root, 30, &heightChange);
+  removedNode = avlRemove(&root, 140, &heightChange);
   
   TEST_ASSERT_NODE(0, &node40, &node20, &node80);
   TEST_ASSERT_NODE(1, &node20, NULL, &node30);
   TEST_ASSERT_NODE(0, &node80, &node60, &node110);
 }
+
