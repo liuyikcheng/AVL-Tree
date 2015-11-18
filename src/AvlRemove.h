@@ -6,5 +6,6 @@
 #include <stdio.h>
 
 Node *avlRemove(Node **rootPtr, int value, int *heightChange);
+Node *avlGetReplacer(Node **rootPtr, int *heightChange);
 
 #endif // AvlRemove_H

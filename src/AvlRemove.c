@@ -3,63 +3,112 @@
 
 
 Node *avlRemove(Node **rootPtr, int value, int *heightChange){
-  Node *removedNode;
-  
-  // if((*rootPtr)->right->data == 140){
-    // printf("%d, ", (*rootPtr)->right->data);
-    // printf("%d, ", (*rootPtr)->data);
-    // printf("%d, ", value);
-      // if (value == (*rootPtr)->right->data){
-    // removedNode = (*rootPtr)->right;
-    // (*rootPtr)->right = NULL;
-    // (*rootPtr)->balanceFactor--;
+  Node *removedNode = NULL;
+  Node *replaceNode = NULL;
+ 
+  if (value == (*rootPtr)->data){  
+      // printf("%d", (*rootPtr)->data);
     
-    // if((*rootPtr)->balanceFactor == 0)
-      // *heightChange = 1;
-    // else
-      // *heightChange = 0;
-  // }
-  // nodeRotation(*rootPtr);
-    // return removedNode;
-  // }
-  if (((*rootPtr)->left != NULL)&&(value == (*rootPtr)->left->data)){
-    removedNode = (*rootPtr)->left;
-    (*rootPtr)->left = NULL;
-    (*rootPtr)->balanceFactor++;
-    
-    if((*rootPtr)->balanceFactor == 0)
+    if ((*rootPtr)->right != NULL){
+      replaceNode = avlGetReplacer(&((*rootPtr)->right), heightChange);
+      replaceNode->right = (*rootPtr)->right;
+      replaceNode->left = (*rootPtr)->left;
+
+      if (*heightChange == 1)
+        replaceNode->balanceFactor = --(*rootPtr)->balanceFactor;
+      else
+        replaceNode->balanceFactor = (*rootPtr)->balanceFactor;
+      
+      if((*rootPtr)->balanceFactor == 0)
+        *heightChange = 1;
+      else
+        *heightChange = 0;
+
+    }
+    else if ((*rootPtr)->left != NULL){
+      replaceNode = (*rootPtr)->left;
       *heightChange = 1;
-    else
-      *heightChange = 0;
-  }
-  else if (((*rootPtr)->right != NULL)&&(value == (*rootPtr)->right->data)){
-    removedNode = (*rootPtr)->right;
-    (*rootPtr)->right = NULL;
-    (*rootPtr)->balanceFactor--;
-    
-    if((*rootPtr)->balanceFactor == 0)
+    }
+    else {
+      replaceNode = NULL;
       *heightChange = 1;
-    else
-      *heightChange = 0;
-  }
-  // else if (value == (*rootPtr)->data){
-    // removedNode = (*rootPtr);
-    // **rootPtr = 0;
-  // } 
+    }
+    
+    removedNode = (*rootPtr);
+    (*rootPtr) = replaceNode;
+    removedNode->right = removedNode->left = NULL;
+    
+  } 
   else if (value < (*rootPtr)->data){
+    
+    if((*rootPtr)->left != NULL)
       removedNode = avlRemove(&((*rootPtr)->left), value, heightChange);
       
-      if(*heightChange)
+    if (*heightChange){
       (*rootPtr)->balanceFactor++;
+      
+      if((*rootPtr)->balanceFactor == 0)
+        *heightChange = 1;
+      else
+        *heightChange = 0;
     }
+  }
   else if (value > (*rootPtr)->data){
-    removedNode = avlRemove(&((*rootPtr)->right), value, heightChange);
-
-    if(*heightChange)
+    
+    if((*rootPtr)->right != NULL)
+      removedNode = avlRemove(&((*rootPtr)->right), value, heightChange);
+    
+    if (*heightChange){
       (*rootPtr)->balanceFactor--;
+      
+      if((*rootPtr)->balanceFactor == 0)
+        *heightChange = 1;
+      else
+        *heightChange = 0;
+    }
   }
   
-  nodeRotation(*rootPtr);
+  
+  if ((*rootPtr) != NULL){
+    nodeRotation(*rootPtr);
+    
+  }
   
   return removedNode;
+}
+
+
+
+/**
+ *
+ *
+ *
+ *
+ */
+Node *avlGetReplacer(Node **rootPtr, int *heightChange){
+  Node *replaceNode;
+  
+  if ((*rootPtr)->left != NULL){
+    replaceNode = avlGetReplacer(&((*rootPtr)->left), heightChange);
+    
+    if(*heightChange){
+      (*rootPtr)->balanceFactor++;
+      
+      if((*rootPtr)->balanceFactor != 0)
+        *heightChange = 0;
+      else
+        *heightChange = 1;
+    }
+    
+      
+  }
+  else {
+    replaceNode = (*rootPtr);
+    *heightChange = 1;
+    // printf("%d", (*rootPtr)->data);
+    (*rootPtr) = (*rootPtr)->right;
+  }
+  
+  
+  return replaceNode;
 }
